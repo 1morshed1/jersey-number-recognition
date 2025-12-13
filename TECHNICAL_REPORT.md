@@ -1,15 +1,14 @@
 # Temporal Jersey Number Recognition - Technical Report
 
-**Author:** Fahim  
+**Author:** Md. Morshed Jamal 
 **Date:** December 13, 2024  
 **Project:** Jersey Number Recognition with 00-99 Generalization  
-**Institution:** Acme AI Ltd. Technical Assessment
 
 ---
 
 ## Executive Summary
 
-This solution implements a **lightweight temporal Convolutional-Recurrent Neural Network (CRNN)** that recognizes jersey numbers (00-99) from video sequences using a **two-digit prediction strategy**. Despite training on only 10 classes `[4, 6, 8, 9, 48, 49, 64, 66, 88, 89]`, the model achieves **96.21% validation accuracy** and demonstrates the architectural capability to generalize to all 100 possible number combinations.
+This solution implements a **lightweight temporal Convolutional-Recurrent Neural Network (CRNN)** that recognizes jersey numbers (00-99) from sequences using a **two-digit prediction strategy**. Despite training on only 10 classes `[4, 6, 8, 9, 48, 49, 64, 66, 88, 89]`, the model achieves **96.21% validation accuracy** and demonstrates the architectural capability to generalize to all 100 possible number combinations.
 
 ### Key Achievements
 - ✅ **Lightweight architecture:** 13.6M parameters (7M trainable), 52MB model size
@@ -337,7 +336,7 @@ For each frame:
 
 | Technique | Implementation | Impact | Parameters |
 |-----------|----------------|--------|------------|
-| **Efficient Backbone** | ResNet-18 (not ResNet-50) | Fewer conv layers | 11.2M → 11.2M |
+| **Efficient Backbone** | ResNet-18 | Fewer conv layers | 11.2M → 11.2M |
 | **Backbone Freezing** | Freeze 60% of layers | Reduce trainable params | 11.2M → 4.5M trainable |
 | **Compact LSTM** | 2-layer, hidden=256 | Balance capacity vs size | ~2.1M |
 | **Shared Backbone** | Single CNN for both digits | No duplication | 0M saved |
@@ -824,7 +823,7 @@ While effective number weighting improved D1 validation accuracy to 99.48%, it c
 
 ### 4.3 Actionable Next Steps
 
-#### 🔴 Critical (Immediate - 1-2 days)
+#### 🔴 Critical 
 
 **1. Aggressive Empty Class Suppression**
 
@@ -859,7 +858,7 @@ if D1_pred == D2_pred and D1_conf < 0.7:
 - No retraining needed
 - Immediate results
 
-#### 🟡 Important (Short-term - 1 week)
+#### 🟡 Important 
 
 **3. Synthetic Data Augmentation**
 
@@ -895,7 +894,7 @@ final = majority_vote(predictions)
 
 **Expected Impact:** +5-10% test accuracy, improved robustness
 
-#### 🟢 Enhancement (Medium-term - 2-4 weeks)
+#### 🟢 Enhancement 
 
 **5. Collect Full Dataset (00-99)**
 
@@ -935,7 +934,7 @@ Trade-offs:
   - Slower inference (15ms → 25ms)
 ```
 
-#### 🔵 Production (Long-term - 1-3 months)
+#### 🔵 Production
 
 **7. Model Compression**
 
@@ -987,29 +986,29 @@ Monitoring:
 
 #### For 00-99 Generalization
 
-| Priority | Action | Effort | Impact | Timeline |
-|----------|--------|--------|--------|----------|
-| 🔴 Critical | 1000× empty suppression | Low | High | 2 days |
-| 🔴 Critical | Improved heuristic | Low | Medium | 1 day |
-| 🟡 Important | Synthetic augmentation | Medium | High | 1 week |
-| 🟡 Important | Confidence ensemble | Medium | Medium | 1 week |
-| 🟢 Enhancement | Collect full dataset | High | Very High | 1 month |
-| 🟢 Enhancement | Architecture upgrade | Medium | Medium | 2 weeks |
+| Priority | Action | Effort | Impact |
+|----------|--------|--------|--------|
+| 🔴 Critical | 1000× empty suppression | Low | High | 
+| 🔴 Critical | Improved heuristic | Low | Medium | 
+| 🟡 Important | Synthetic augmentation | Medium | High | 
+| 🟡 Important | Confidence ensemble | Medium | Medium | 
+| 🟢 Enhancement | Collect full dataset | High | Very High | 
+| 🟢 Enhancement | Architecture upgrade | Medium | Medium | 
 
 #### Success Metrics
 
 ```
-Milestone 1 (Week 1):
+Milestone 1 :
   ✓ Test accuracy > 50%
   ✓ D1 accuracy > 60%
   ✓ Model demonstrates generalization
 
-Milestone 2 (Week 2-4):
+Milestone 2 :
   ✓ Test accuracy > 70%
   ✓ Robust to different thresholds
   ✓ Synthetic data integrated
 
-Milestone 3 (Month 2-3):
+Milestone 3 :
   ✓ Full 00-99 coverage
   ✓ Test accuracy > 85%
   ✓ Production-ready model
@@ -1154,28 +1153,10 @@ a_t = softmax(MLP(h_t))
 h_agg = Σ(a_t × h_t)
 ```
 
-### E. References
 
-1. **ResNet:** He, K., et al. (2016). "Deep Residual Learning for Image Recognition." *CVPR*.
 
-2. **LSTM:** Hochreiter, S., & Schmidhuber, J. (1997). "Long Short-Term Memory." *Neural Computation*, 9(8), 1735-1780.
 
-3. **Attention Mechanism:** Vaswani, A., et al. (2017). "Attention Is All You Need." *NeurIPS*.
-
-4. **Class Imbalance:** Cui, Y., et al. (2019). "Class-Balanced Loss Based on Effective Number of Samples." *CVPR*.
-
-5. **MixUp:** Zhang, H., et al. (2018). "mixup: Beyond Empirical Risk Minimization." *ICLR*.
-
-6. **Label Smoothing:** Szegedy, C., et al. (2016). "Rethinking the Inception Architecture for Computer Vision." *CVPR*.
-
----
-
-## Acknowledgments
-
-This work was completed as part of the Acme AI Ltd. technical assessment. The temporal dataset and problem formulation were provided by Acme AI Ltd.
-
-**Author:** Fahim  
-**Contact:** [Your Email]  
+**Author:** Md. Morshed Jamal 
 **Date:** December 13, 2024  
 **Version:** 1.0
 

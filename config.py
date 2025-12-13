@@ -16,8 +16,8 @@ class Config:
     # ============================================
     # DATA CONFIGURATION
     # ============================================
-    # Use environment variable with fallback to relative path
-    DATA_ROOT = os.environ.get('JERSEY_DATA_ROOT')
+    # Use environment variable
+    DATA_ROOT = os.environ.get('DATA_ROOT')
     
     # ============================================
     #  TRAINING/TEST SPLIT

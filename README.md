@@ -107,7 +107,7 @@ Reconstruction
 1. **Clone the repository:**
 ```bash
 git clone <repository-url>
-cd jersey_v2
+cd jersey-number-recognition
 ```
 
 2. **Install PyTorch with CUDA support:**
@@ -167,7 +167,7 @@ Set your dataset path in `config.py` or via environment variable:
 DATA_ROOT = '/path/to/your/dataset'
 
 # Or via environment variable
-export JERSEY_DATA_ROOT='/path/to/your/dataset'
+export DATA_ROOT='/path/to/your/dataset'
 ```
 
 ### Training/Test Split
@@ -176,10 +176,10 @@ The configuration uses a strategic split to test generalization:
 
 ```python
 # Training classes (learn digits)
-TRAIN_CLASSES = [4, 6, 8, 9, 48, 49, 66, 89]  # 97,779 images
+TRAIN_CLASSES = [4, 6, 8, 9, 48, 49, 66, 89]  
 
 # Test classes (unseen combinations)
-TEST_CLASSES = [48, 64, 88]  # 136 images - tests digit composition
+TEST_CLASSES = [48, 64, 88]  
 ```
 
 ## 🎮 Usage
@@ -291,7 +291,7 @@ AUG_CONTRAST = 0.2               # Contrast jitter
 
 ### Training Performance
 
-![Training Results](run_20251213_203647.png)
+![Model Architecture](run_20251213_203647.png)
 
 | Metric | Value |
 |--------|-------|
@@ -481,25 +481,13 @@ python -m pytest tests/
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📚 References
-
-1. **ResNet:** He, K., et al. (2016). "Deep Residual Learning for Image Recognition." *CVPR*.
-2. **LSTM:** Hochreiter, S., & Schmidhuber, J. (1997). "Long Short-Term Memory." *Neural Computation*.
-3. **Attention Mechanism:** Vaswani, A., et al. (2017). "Attention Is All You Need." *NeurIPS*.
-4. **Class Imbalance:** Cui, Y., et al. (2019). "Class-Balanced Loss Based on Effective Number of Samples." *CVPR*.
-5. **MixUp:** Zhang, H., et al. (2018). "mixup: Beyond Empirical Risk Minimization." *ICLR*.
-
 ## 📞 Support
 
-For questions and support:
-
-- 📧 **Email:** [your-email@example.com]
-- 🐛 **Issues:** [GitHub Issues](https://github.com/your-repo/jersey_v2/issues)
 - 📖 **Documentation:** [Technical Report](TECHNICAL_REPORT.md)
 
 ---
 
-**Author:** Fahim  
+**Author:** Md. Morshed Jamal  
 **Date:** December 13, 2024  
 **Version:** 1.0
 
