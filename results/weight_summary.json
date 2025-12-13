@@ -1,0 +1,40 @@
+{
+    "checkpoint_path": "checkpoints/best_model.pth",
+    "best_val_acc": 95.86563110351562,
+    "epoch": 21,
+    "total_parameters": 15159640,
+    "trainable_parameters": 13590808,
+    "model_size_mb": 57.829437255859375,
+    "components": {
+        "backbone": {
+            "total_params": 11176512,
+            "trainable_params": 9607680,
+            "num_layers": 60
+        },
+        "spatial_attention": {
+            "total_params": 33025,
+            "trainable_params": 33025,
+            "num_layers": 6
+        },
+        "lstm": {
+            "total_params": 3153920,
+            "trainable_params": 3153920,
+            "num_layers": 16
+        },
+        "temporal_attention": {
+            "total_params": 131585,
+            "trainable_params": 131585,
+            "num_layers": 4
+        },
+        "head_digit1": {
+            "total_params": 332299,
+            "trainable_params": 332299,
+            "num_layers": 12
+        },
+        "head_digit2": {
+            "total_params": 332299,
+            "trainable_params": 332299,
+            "num_layers": 12
+        }
+    }
+}

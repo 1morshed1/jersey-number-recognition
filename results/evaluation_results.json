@@ -1,0 +1,79 @@
+{
+    "metadata": {
+        "checkpoint": "checkpoints/best_model.pth",
+        "test_classes": [
+            48,
+            64,
+            88
+        ],
+        "timestamp": "2025-12-13T20:47:56.844906",
+        "empty_threshold": 0.55,
+        "reconstruction_rule": "d1_conf > 0.1 and d2_conf > 0.5"
+    },
+    "results": {
+        "overall": {
+            "accuracy": 7.407407407407407,
+            "d1_accuracy": 7.4074074074074066,
+            "d2_accuracy": 77.77777777777779,
+            "avg_confidence": 0.506567120552063,
+            "total_samples": 27,
+            "correct_samples": 2,
+            "empty_threshold": 0.55,
+            "predictions_modified": 26
+        },
+        "per_class": {
+            "48": {
+                "total": 19,
+                "correct": 0,
+                "accuracy": 0.0
+            },
+            "64": {
+                "total": 5,
+                "correct": 0,
+                "accuracy": 0.0
+            },
+            "88": {
+                "total": 3,
+                "correct": 2,
+                "accuracy": 66.66666666666667
+            }
+        },
+        "predictions": [],
+        "confusion_matrices": {
+            "d1": [
+                [
+                    0,
+                    0,
+                    19
+                ],
+                [
+                    0,
+                    0,
+                    5
+                ],
+                [
+                    0,
+                    1,
+                    2
+                ]
+            ],
+            "d2": [
+                [
+                    0,
+                    3,
+                    2
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    1,
+                    21
+                ]
+            ]
+        }
+    }
+}
