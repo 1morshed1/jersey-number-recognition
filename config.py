@@ -7,16 +7,17 @@ Optimized for your actual dataset
 
 import os
 import warnings
+from dotenv import load_dotenv
+
+
+load_dotenv()  # Load environment variables from .env file if present
 
 class Config:
     # ============================================
     # DATA CONFIGURATION
     # ============================================
     # Use environment variable with fallback to relative path
-    DATA_ROOT = os.environ.get(
-        'JERSEY_DATA_ROOT',
-        '/media/fahim/Softwares/acme/temporal_jersey_nr_recognition_dataset_subset'
-    )
+    DATA_ROOT = os.environ.get('JERSEY_DATA_ROOT')
     
     # ============================================
     # CRITICAL: TRAINING/TEST SPLIT
