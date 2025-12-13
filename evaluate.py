@@ -1,4 +1,4 @@
-# evaluate.py - CONFIDENCE-AWARE VERSION with Anti-Empty-Bias Heuristic
+# evaluate.py
 import os
 import torch
 import torch.nn as nn
@@ -37,7 +37,7 @@ class Evaluator:
 
         checkpoint = torch.load(self.checkpoint_path, map_location=self.device)
 
-        # Backward compatibility: support both old 'config' and new vars(Config)
+        
         if 'config' in checkpoint:
             cfg = checkpoint['config']
         else:
@@ -129,7 +129,7 @@ class Evaluator:
                 else:
                     d1_logit, d2_logit = out
 
-                # D2 prediction (works fine as-is)
+                # D2 prediction 
                 d2_pred = d2_logit.argmax(1)
 
                 # D1 prediction with anti-empty-bias heuristic
@@ -141,8 +141,7 @@ class Evaluator:
                     probs = d1_probs_softmax[i]
                     
                     if probs[EMPTY_CLASS] < EMPTY_THRESHOLD:
-                        # "Empty" probability is low - don't trust it
-                        # Mask it out and use next best prediction
+                        
                         masked_probs = probs.clone()
                         masked_probs[EMPTY_CLASS] = 0
                         prediction = masked_probs.argmax().item()
@@ -152,7 +151,7 @@ class Evaluator:
                         if probs.argmax().item() == EMPTY_CLASS:
                             batch_modified += 1
                     else:
-                        # "Empty" probability is high - trust it
+                        
                         d1_pred_list.append(EMPTY_CLASS)
 
                 d1_pred = torch.tensor(d1_pred_list, device=d1_logit.device)
@@ -190,7 +189,7 @@ class Evaluator:
                     if pred_cls == true_cls:
                         class_correct[true_cls] += 1
 
-        print(f"\n  ℹ️  Anti-empty-bias heuristic modified {total_modified}/{total_samples} predictions " + 
+        print(f"\n Anti-empty-bias heuristic modified {total_modified}/{total_samples} predictions " + 
               f"({100*total_modified/total_samples:.1f}%, threshold={EMPTY_THRESHOLD})")
 
         # Convert to numpy

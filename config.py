@@ -20,16 +20,11 @@ class Config:
     DATA_ROOT = os.environ.get('JERSEY_DATA_ROOT')
     
     # ============================================
-    # CRITICAL: TRAINING/TEST SPLIT
+    #  TRAINING/TEST SPLIT
     # ============================================
-    # Based on your dataset:
-    #   Large classes: 4(14,964), 6(13,122), 8(36,817), 9(29,018)
-    #   Medium classes: 48(363), 49(2,195), 66(2,121), 89(2,196)
-    #   Small classes: 64(52), 88(84)
     
-    # RECOMMENDED: Use large + medium for training
-    TRAIN_CLASSES = [4, 6, 8, 9, 49, 66, 89]  # 97,779 images
-    TEST_CLASSES = [48, 64, 88]                        # 136 images
+    TRAIN_CLASSES = [4, 6, 8, 9, 49, 66, 89]  
+    TEST_CLASSES = [48, 64, 88]                       
     
     # Validation split (from training data)
     VAL_SPLIT = 0.2
@@ -43,7 +38,7 @@ class Config:
     SEQ_LENGTH = 5
     
     # Model architecture options
-    BACKBONE = 'resnet18'  # Options: 'resnet18', 'resnet34', 'resnet50'
+    BACKBONE = 'resnet18'  
     USE_SPATIAL_ATTENTION = True
     USE_TEMPORAL_ATTENTION = True
     BIDIRECTIONAL_LSTM = True
@@ -69,7 +64,7 @@ class Config:
     EARLY_STOPPING_PATIENCE = 10
     EARLY_STOPPING_MIN_DELTA = 0.001
     
-    # Mixed precision training (faster on modern GPUs)
+    # Mixed precision training 
     USE_MIXED_PRECISION = True
     
     # Class weight method
@@ -162,14 +157,14 @@ class Config:
         
         # Print errors
         if errors:
-            print("\n❌ CONFIGURATION ERRORS:")
+            print("\n CONFIGURATION ERRORS:")
             for error in errors:
                 print(f"  • {error}")
             raise ValueError("Configuration validation failed")
         
         # Print warnings
         if warnings_list:
-            print("\n⚠️  CONFIGURATION WARNINGS:")
+            print("\n CONFIGURATION WARNINGS:")
             for warning in warnings_list:
                 print(f"  • {warning}")
         
@@ -189,7 +184,7 @@ def validate_config():
     print("\n🔍 Analyzing Digit Coverage:")
     
     if Config.TRAIN_CLASSES is None:
-        print("   ⚠️  No specific training classes defined")
+        print(" No specific training classes defined")
         return
     
     train_tens = set()
@@ -213,9 +208,9 @@ def validate_config():
         for test_cls in Config.TEST_CLASSES:
             if test_cls < 10:
                 if test_cls in train_units:
-                    print(f"    ✅ Class {test_cls}: covered (single digit)")
+                    print(f" Class {test_cls}: covered (single digit)")
                 else:
-                    print(f"    ❌ Class {test_cls}: NOT covered")
+                    print(f" Class {test_cls}: NOT covered")
                     can_generalize_all = False
             else:
                 tens = test_cls // 10
@@ -225,36 +220,36 @@ def validate_config():
                 units_covered = units in train_units
                 
                 if tens_covered and units_covered:
-                    print(f"    ✅ Class {test_cls} = {tens}{units}: covered")
+                    print(f" Class {test_cls} = {tens}{units}: covered")
                 else:
                     missing = []
                     if not tens_covered:
                         missing.append(f"tens={tens}")
                     if not units_covered:
                         missing.append(f"units={units}")
-                    print(f"    ❌ Class {test_cls}: NOT covered ({', '.join(missing)})")
+                    print(f" Class {test_cls}: NOT covered ({', '.join(missing)})")
                     can_generalize_all = False
         
         if can_generalize_all:
-            print(f"\n  ✅ Model should generalize to all test classes!")
+            print("\n Model should generalize to all test classes!")
         else:
-            print(f"\n  ⚠️  WARNING: Model may struggle with some test classes")
+            print("\n WARNING: Model may struggle with some test classes")
     
     print("\n" + "="*70)
     print("CONFIGURATION SUMMARY")
     print("="*70)
-    print(f"📁 Data root: {Config.DATA_ROOT}")
-    print(f"🎯 Train classes: {Config.TRAIN_CLASSES}")
-    print(f"🧪 Test classes: {Config.TEST_CLASSES}")
-    print(f"📊 Validation split: {Config.VAL_SPLIT*100:.0f}%")
-    print(f"🏗️  Backbone: {Config.BACKBONE}")
-    print(f"📐 Image size: {Config.IMG_SIZE}x{Config.IMG_SIZE}")
-    print(f"⏱️  Sequence length: {Config.SEQ_LENGTH} frames")
-    print(f"🔢 Batch size: {Config.BATCH_SIZE}")
-    print(f"📈 Epochs: {Config.NUM_EPOCHS}")
-    print(f"🎓 Learning rate: {Config.LEARNING_RATE}")
-    print(f"💾 Checkpoints: {Config.CHECKPOINT_DIR}/")
-    print(f"📊 Results: {Config.RESULTS_DIR}/")
+    print(f" Data root: {Config.DATA_ROOT}")
+    print(f" Train classes: {Config.TRAIN_CLASSES}")
+    print(f" Test classes: {Config.TEST_CLASSES}")
+    print(f" Validation split: {Config.VAL_SPLIT*100:.0f}%")
+    print(f" Backbone: {Config.BACKBONE}")
+    print(f" Image size: {Config.IMG_SIZE}x{Config.IMG_SIZE}")
+    print(f" Sequence length: {Config.SEQ_LENGTH} frames")
+    print(f" Batch size: {Config.BATCH_SIZE}")
+    print(f" Epochs: {Config.NUM_EPOCHS}")
+    print(f" Learning rate: {Config.LEARNING_RATE}")
+    print(f" Checkpoints: {Config.CHECKPOINT_DIR}/")
+    print(f" Results: {Config.RESULTS_DIR}/")
     print("="*70 + "\n")
 
 

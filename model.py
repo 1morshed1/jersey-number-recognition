@@ -176,7 +176,7 @@ class JerseyTemporalNet(nn.Module):
         self.backbone_name = backbone
         self.backbone, self.feature_dim = self._build_backbone(backbone)
         
-        # Spatial attention module (optional)
+        # Spatial attention module
         if use_spatial_attention:
             # Get the number of channels before global pooling
             # For ResNet: layer4 outputs different channels per variant
@@ -201,7 +201,7 @@ class JerseyTemporalNet(nn.Module):
         # Effective hidden dimension after LSTM
         lstm_output_dim = hidden_dim * 2 if bidirectional else hidden_dim
         
-        # Temporal attention module (optional)
+        # Temporal attention module
         if use_temporal_attention:
             self.temporal_attention = TemporalAttention(lstm_output_dim)
             self.aggregation_method = 'attention'
@@ -241,7 +241,7 @@ class JerseyTemporalNet(nn.Module):
         frozen_params = 0
         total_params = 0
         
-        print(f"\n🔒 Freezing {freeze_percentage*100:.0f}% of backbone layers ({freeze_until_idx}/{total_layers}):")
+        print(f"\n Freezing {freeze_percentage*100:.0f}% of backbone layers ({freeze_until_idx}/{total_layers}):")
         
         for idx, (name, param) in enumerate(params):
             total_params += param.numel()
@@ -249,15 +249,15 @@ class JerseyTemporalNet(nn.Module):
             if idx < freeze_until_idx:
                 param.requires_grad = False
                 frozen_params += param.numel()
-                if idx < 3:  # Print first 3
-                    print(f"  ❄️  Frozen: {name} ({param.numel():,} params)")
+                if idx < 3: 
+                    print(f" Frozen: {name} ({param.numel():,} params)")
             else:
                 param.requires_grad = True
                 if idx == freeze_until_idx:  # Print first unfrozen
                     print(f"  ... ({freeze_until_idx - 3} more frozen layers)")
-                    print(f"  🔥 Trainable: {name} ({param.numel():,} params)")
+                    print(f" Trainable: {name} ({param.numel():,} params)")
                 elif idx < freeze_until_idx + 2:
-                    print(f"  🔥 Trainable: {name} ({param.numel():,} params)")
+                    print(f" Trainable: {name} ({param.numel():,} params)")
         
         print(f"\n  Total: {frozen_params:,} / {total_params:,} frozen ({frozen_params/total_params*100:.1f}%)")
         
@@ -315,12 +315,12 @@ class JerseyTemporalNet(nn.Module):
         params = list(self.backbone.named_parameters())
         num_to_unfreeze = int(len(params) * percentage)
         
-        print(f"\n🔓 Unfreezing {percentage*100:.0f}% of backbone layers ({num_to_unfreeze} layers):")
+        print(f"\n Unfreezing {percentage*100:.0f}% of backbone layers ({num_to_unfreeze} layers):")
         
         for idx, (name, param) in enumerate(params[-num_to_unfreeze:]):
             param.requires_grad = True
             if idx < 3:  # Print first 3
-                print(f"  🔥 Unfrozen: {name}")
+                print(f" Unfrozen: {name}")
     
     def forward(self, x, mask=None):
         """
@@ -463,7 +463,6 @@ class JerseyTemporalNet(nn.Module):
             return sum(p.numel() for p in self.parameters())
 
 
-# Test the model
 if __name__ == "__main__":
     print("="*70)
     print("Testing Enhanced JerseyTemporalNet Model")
@@ -487,13 +486,13 @@ if __name__ == "__main__":
         bidirectional=True
     )
     
-    print(f"   ✅ Model created!")
+    print("   Model created!")
     print(f"   Total parameters: {model.get_num_params(trainable_only=False):,}")
     print(f"   Trainable parameters: {model.get_num_params(trainable_only=True):,}")
     
     # Create dummy input
     dummy_input = torch.randn(batch_size, seq_length, 3, img_size, img_size)
-    print(f"\n2. Testing forward pass...")
+    print("\n2. Testing forward pass...")
     print(f"   Input shape: {dummy_input.shape}")
     
     # Forward pass
@@ -511,5 +510,5 @@ if __name__ == "__main__":
         print(f"   Output D2 shape: {d2_logits.shape}")
     
     print("\n" + "="*70)
-    print("✅ All tests passed!")
+    print(" All tests passed!")
     print("="*70)

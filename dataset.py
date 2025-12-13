@@ -40,10 +40,9 @@ class JerseySequenceDataset(Dataset):
     def _parse_class_label(self, class_name):
         """
         Parse class folder name to digit labels.
-        Handles: '4', '04', '48', '08', etc.
         
         Args:
-            class_name: Folder name (e.g., '4', '48', '04')
+            class_name: Folder name 
         
         Returns:
             (label_d1, label_d2): Tuple of digit labels
@@ -68,7 +67,7 @@ class JerseySequenceDataset(Dataset):
             return label_d1, label_d2
         
         except ValueError as e:
-            print(f"⚠️  Warning: Invalid class folder name '{class_name}': {e}")
+            print(f" Warning: Invalid class folder name '{class_name}': {e}")
             return None, None
     
     def _crawl_dataset(self):
@@ -79,7 +78,7 @@ class JerseySequenceDataset(Dataset):
         if not os.path.exists(self.root_dir):
             raise ValueError(f"Dataset path does not exist: {self.root_dir}")
         
-        # Get all class folders (e.g., '4', '48', '8')
+        # Get all class folders
         class_folders = [d for d in os.listdir(self.root_dir) 
                         if os.path.isdir(os.path.join(self.root_dir, d))]
         
@@ -112,8 +111,8 @@ class JerseySequenceDataset(Dataset):
             for seq_id in seq_folders:
                 seq_path = os.path.join(class_path, seq_id)
                 
-                # Iterate over internal label subdirectories (0, 1, 2...)
-                # These are tracklets/sub-sequences
+                # Iterate over internal label subdirectories
+                # These are sub-sequences
                 sub_dirs = [s for s in os.listdir(seq_path) 
                            if os.path.isdir(os.path.join(seq_path, s))]
                 
@@ -138,7 +137,7 @@ class JerseySequenceDataset(Dataset):
         print(f"{'='*60}")
         print(f"Total sequences: {total_sequences}")
         print(f"Classes found: {len(class_distribution)}")
-        print(f"\nClass distribution:")
+        print("\nClass distribution:")
         for cls, count in sorted(class_distribution.items(), key=lambda x: int(x[0])):
             print(f"  Class {cls:>2s}: {count:>4d} sequences")
         print(f"{'='*60}\n")
@@ -181,7 +180,7 @@ class JerseySequenceDataset(Dataset):
                 else:
                     indices.extend(remaining_indices)
                     while len(indices) < self.seq_length:
-                        indices.append(remaining_indices[-1])  # Repeat last
+                        indices.append(remaining_indices[-1])  
             
             elif self.sampling_strategy == 'random':
                 if len(remaining_indices) >= remaining_needed:
@@ -258,7 +257,7 @@ class JerseySequenceDataset(Dataset):
             try:
                 img = Image.open(img_path).convert('RGB')
                 
-                # 👇 ENHANCE IMAGE BEFORE TRANSFORM 👇
+                # ENHANCE IMAGE BEFORE TRANSFORM 
                 img = self._enhance_image(img)
                 
                 if self.transform:
@@ -274,7 +273,7 @@ class JerseySequenceDataset(Dataset):
                     img = default_transform(img)
                 frames.append(img)
             except Exception as e:
-                print(f"⚠️  Warning: Failed to load {img_path}: {e}")
+                print(f" Warning: Failed to load {img_path}: {e}")
                 if self.transform:
                     black_frame = torch.zeros(3, Config.IMG_SIZE, Config.IMG_SIZE)
                 else:
@@ -305,7 +304,7 @@ class JerseySequenceDataset(Dataset):
         d1_counts = Counter(d1_labels)
         d2_counts = Counter(d2_labels)
         
-        print(f"\n📊 Label Distribution:")
+        print("\n Label Distribution:")
         print(f"D1 counts: {dict(sorted(d1_counts.items()))}")
         print(f"D2 counts: {dict(sorted(d2_counts.items()))}")
         
@@ -321,7 +320,7 @@ class JerseySequenceDataset(Dataset):
                 if digit in d1_counts and d1_counts[digit] > 0:
                     d1_weights[digit] = total_samples / (d1_counts[digit] * Config.NUM_DIGIT_CLASSES)
                 else:
-                    # Missing class: give very low weight (don't penalize)
+                    # Missing class: give very low weight
                     d1_weights[digit] = 0.001
             
             for digit in range(Config.NUM_DIGIT_CLASSES):
@@ -331,7 +330,7 @@ class JerseySequenceDataset(Dataset):
                     d2_weights[digit] = 0.001
         
         elif method == 'effective_number':
-            # Effective number of samples (better for extreme imbalance)
+            # Effective number of samples 
             beta = 0.9999
             
             for digit in range(Config.NUM_DIGIT_CLASSES):
@@ -348,42 +347,36 @@ class JerseySequenceDataset(Dataset):
                 else:
                     d2_weights[digit] = 0.001
             
-            # ADDITIONAL FIX: Manually suppress the "empty" class (10) for D1
+            # Manually suppress the "empty" class (10) for D1
             if suppress_empty_weight and 10 in d1_counts:
-                print(f"\n🔧 Suppressing D1 'empty' class weight by 10x")
-                d1_weights[10] = d1_weights[10] * 0.01  # Reduce by 10x
+                print(f"\n🔧 Suppressing D1 'empty' class weight by 100x")
+                d1_weights[10] = d1_weights[10] * 0.01  
         
         else:
             raise ValueError(f"Unknown class weight method: {method}")
         
-        # DON'T NORMALIZE! Keep the raw weights for maximum reweighting effect
-        # Comment out these lines:
-        # d1_weights = d1_weights / d1_weights.sum() * Config.NUM_DIGIT_CLASSES
-        # d2_weights = d2_weights / d2_weights.sum() * Config.NUM_DIGIT_CLASSES
-        
-        # Instead, just normalize to prevent extreme gradients
-        d1_weights = torch.sqrt(d1_weights)  # Square root to soften
+        d1_weights = torch.sqrt(d1_weights) 
         d2_weights = torch.sqrt(d2_weights)
         
         # Print weight distribution with better formatting
-        print(f"\n⚖️  Class Weights (method={method}):")
-        print(f"\nD1 weights (Tens digit):")
+        print(f"\n  Class Weights (method={method}):")
+        print("\nD1 weights (Tens digit):")
         for i in range(Config.NUM_DIGIT_CLASSES):
             label = "Empty" if i == 10 else str(i)
             count = d1_counts.get(i, 0)
             print(f"  {label:>5s} (count: {count:>6d}): weight = {d1_weights[i]:.6f}")
         
-        print(f"\nD2 weights (Units digit):")
+        print("\nD2 weights (Units digit):")
         for i in range(Config.NUM_DIGIT_CLASSES):
             label = "Empty" if i == 10 else str(i)
             count = d2_counts.get(i, 0)
-            if count > 0:  # Only print non-zero
+            if count > 0: 
                 print(f"  {label:>5s} (count: {count:>6d}): weight = {d2_weights[i]:.6f}")
         
         return d1_weights, d2_weights
     
     def set_transform(self, transform):
-        """Change the transform (useful for switching between train/val)"""
+        """Change the transform"""
         self.transform = transform
 
 
@@ -412,7 +405,7 @@ if __name__ == "__main__":
         sampling_strategy='uniform'
     )
     
-    print(f"\n✅ Dataset created successfully!")
+    print("\n Dataset created successfully!")
     print(f"Total samples: {len(dataset)}")
     
     # Test loading one sample
@@ -424,4 +417,4 @@ if __name__ == "__main__":
         
         # Test class weights
         w1, w2 = dataset.get_class_weights(method='balanced')
-        print(f"\n✅ Class weights calculated!")
+        print("\n Class weights calculated!")

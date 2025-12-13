@@ -1,4 +1,4 @@
-# train.py - ULTIMATE VERSION: MixUp + Effective Weights + TensorBoard Logging
+# train.py
 import os
 import torch
 import torch.nn as nn
@@ -71,7 +71,7 @@ class Trainer:
         # Initialize TensorBoard
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         self.writer = SummaryWriter(os.path.join(Config.LOGS_DIR, f'run_{timestamp}'))
-        print(f"📊 TensorBoard logging to: {Config.LOGS_DIR}/run_{timestamp}")
+        print(f" TensorBoard logging to: {Config.LOGS_DIR}/run_{timestamp}")
 
         self.setup_data()
         self.setup_model()
@@ -153,9 +153,9 @@ class Trainer:
         dummy_input = torch.randn(1, Config.SEQ_LENGTH, 3, Config.IMG_SIZE, Config.IMG_SIZE).to(self.device)
         try:
             self.writer.add_graph(self.model, dummy_input)
-            print("✅ Model graph saved to TensorBoard")
+            print(" Model graph saved to TensorBoard")
         except Exception as e:
-            print(f"⚠️  Could not save model graph: {e}")
+            print(f" Could not save model graph: {e}")
 
         print("Model ready — MixUp + effective_number weights with suppressed empty class")
 
@@ -268,7 +268,7 @@ class Trainer:
 
     def train(self):
         print("\n" + "="*60)
-        print("TRAINING WITH MIXUP — GENERALIZATION GUARANTEED")
+        print("TRAINING WITH MIXUP")
         print("="*60)
 
         for epoch in range(1, Config.NUM_EPOCHS + 1):
@@ -322,7 +322,7 @@ class Trainer:
         self.writer.close()
         
         print(f"\nTRAINING COMPLETE! Best Val Acc: {self.best_val_acc:.2f}%")
-        print(f"📊 View TensorBoard: tensorboard --logdir={Config.LOGS_DIR}")
+        print(f" View TensorBoard: tensorboard --logdir={Config.LOGS_DIR}")
         print("Now run: python evaluate.py --checkpoint checkpoints/best_model.pth")
 
 

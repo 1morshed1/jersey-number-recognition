@@ -1,4 +1,4 @@
-# analyze_weights.py - Summary of Trained Weights
+# analyze_weights.py
 import torch
 import json
 import os
@@ -15,9 +15,9 @@ def analyze_model_weights(checkpoint_path):
     # Load checkpoint
     checkpoint = torch.load(checkpoint_path, map_location='cpu')
     
-    print(f"\n📁 Checkpoint: {checkpoint_path}")
-    print(f"🏆 Best Validation Accuracy: {checkpoint.get('best_val_acc', 'N/A'):.2f}%")
-    print(f"📅 Training Epoch: {checkpoint.get('epoch', 'N/A')}")
+    print(f"\n Checkpoint: {checkpoint_path}")
+    print(f" Best Validation Accuracy: {checkpoint.get('best_val_acc', 'N/A'):.2f}%")
+    print(f" Training Epoch: {checkpoint.get('epoch', 'N/A')}")
     
     # Create model
     model = JerseyTemporalNet(
@@ -103,14 +103,14 @@ def analyze_model_weights(checkpoint_path):
     print("="*70)
     
     for head_name in ['head_digit1', 'head_digit2']:
-        print(f"\n🎯 {head_name.upper()} (Tens Digit)" if '1' in head_name else f"\n🎯 {head_name.upper()} (Units Digit)")
+        print(f"\n {head_name.upper()} (Tens Digit)" if '1' in head_name else f"\n🎯 {head_name.upper()} (Units Digit)")
         head_params = components[head_name]
         
         for name, param in head_params:
             if 'fc_out.weight' in name:
                 print(f"   Output Layer Shape: {list(param.shape)}")
                 print(f"   → Maps {param.shape[1]} features → {param.shape[0]} digit classes")
-                print(f"   Weight Statistics:")
+                print("   Weight Statistics:")
                 print(f"      Mean: {param.data.mean().item():.4f}")
                 print(f"      Std:  {param.data.std().item():.4f}")
                 print(f"      Min:  {param.data.min().item():.4f}")
@@ -138,7 +138,7 @@ def analyze_model_weights(checkpoint_path):
     with open(output_path, 'w') as f:
         json.dump(summary, f, indent=4)
     
-    print(f"\n✅ Summary saved to: {output_path}")
+    print(f"\n Summary saved to: {output_path}")
     print("="*70)
 
 if __name__ == "__main__":
