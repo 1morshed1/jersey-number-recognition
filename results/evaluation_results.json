@@ -6,18 +6,18 @@
             64,
             88
         ],
-        "timestamp": "2025-12-13T22:59:16.585257",
+        "timestamp": "2025-12-14T17:35:25.735605",
         "empty_threshold": 0.55,
         "reconstruction_rule": "d1_conf > 0.1 and d2_conf > 0.5"
     },
     "results": {
         "overall": {
-            "accuracy": 0.0,
-            "d1_accuracy": 37.03703703703704,
-            "d2_accuracy": 11.11111111111111,
-            "avg_confidence": 0.32582494616508484,
+            "accuracy": 7.407407407407407,
+            "d1_accuracy": 7.4074074074074066,
+            "d2_accuracy": 77.77777777777779,
+            "avg_confidence": 0.506567120552063,
             "total_samples": 27,
-            "correct_samples": 0,
+            "correct_samples": 2,
             "empty_threshold": 0.55,
             "predictions_modified": 26
         },
@@ -34,22 +34,22 @@
             },
             "88": {
                 "total": 3,
-                "correct": 0,
-                "accuracy": 0.0
+                "correct": 2,
+                "accuracy": 66.66666666666667
             }
         },
         "predictions": [],
         "confusion_matrices": {
             "d1": [
                 [
-                    8,
                     0,
-                    11
+                    0,
+                    19
                 ],
                 [
-                    1,
                     0,
-                    4
+                    0,
+                    5
                 ],
                 [
                     0,
@@ -60,27 +60,18 @@
             "d2": [
                 [
                     0,
-                    0,
-                    5,
-                    0
-                ],
-                [
-                    0,
-                    0,
-                    0,
-                    0
-                ],
-                [
-                    9,
-                    1,
                     3,
-                    9
+                    2
                 ],
                 [
                     0,
                     0,
-                    0,
                     0
+                ],
+                [
+                    0,
+                    1,
+                    21
                 ]
             ]
         }

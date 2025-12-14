@@ -188,17 +188,17 @@ TEST_CLASSES = [48, 64, 88]
 
 1. **Validate configuration:**
 ```bash
-python config.py
+python3 config.py
 ```
 
 2. **Train the model:**
 ```bash
-python train.py
+python3 train.py
 ```
 
 3. **Evaluate on test set:**
 ```bash
-python evaluate.py --checkpoint checkpoints/best_model.pth
+python3 evaluate.py --checkpoint checkpoints/best_model.pth
 ```
 
 4. **Monitor training with TensorBoard:**
